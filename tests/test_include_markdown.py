@@ -114,6 +114,32 @@ This must be included.
 
 <!-- END INCLUDE -->
 ''',
+        ),
+
+        # Before and after arguments
+        (
+            '''# Header
+
+{%
+  include-markdown "{filepath}"
+  before="## Subhead\n"
+  after="\nAnd that's how it is.\n"
+%}
+''',
+            '''These comments have been relegated to a
+subheading!
+''',
+            '''# Header
+
+<!-- BEGIN INCLUDE {filepath}   -->
+## Subhead
+These comments have been relegated to a
+subheading!
+
+And that's how it is.
+
+<!-- END INCLUDE -->
+''',
         )
     ),
 )

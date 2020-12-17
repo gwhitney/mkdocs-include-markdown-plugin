@@ -39,12 +39,14 @@ content to include.
 
 - **start**: Delimiter that marks the beginning of the content to include.
 - **end**: Delimiter that marks the end of the content to include.
+- **before**: Optional extra markdown to insert just before the included content
+- **after**: Optional extra markdown to insert just after the included content
 - **rewrite_relative_urls**: When this option is enabled, Markdown links and 
  images in the content that are specified by a relative URL are rewritten to
  work correctly in their new location. Default: `true`. Possible values are
  `true` and `false`.
 
-Note that the **start** and **end** strings may contain usual (Python-style)
+Note that all of the string-valued options may contain usual (Python-style)
 escape sequences like `\n`, which is handy if you need to match on a multi-line
 start or end trigger.
 
@@ -67,6 +69,21 @@ start or end trigger.
 %}
 ```
 
+Although this directive would typically be used to incorporate markdown,
+that's not specifically required, so it can be used for example to extract
+a chunk of code for display:
+
+```
+{%
+   include-markdown "src/example.py"
+   start="# Example 1:"
+   end="# end Example 1"
+   before="```python"
+   after="```"
+   rewrite_relative_urls=false
+%}
+```
+
 #### **`include`**
 
 Includes the content of a file.
@@ -78,6 +95,15 @@ Includes the content of a file.
 {% include "../examples/github-minimal.yml" %}
 ```
 ~~~
+
+So in essence `include` is just a convenient abbreviation for
+
+```
+{%
+   include-markdown "FILE"
+   rewrite_relative_urls=false
+%}
+```
 
 ## Acknowledgment
 

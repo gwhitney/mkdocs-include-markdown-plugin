@@ -27,6 +27,8 @@ INCLUDE_MARKDOWN_TAG_REGEX = re.compile(
         "(?P<filename>[^"]+)" # "filename"
         (?:\s+start="(?P<start>[^"]+)")? # optional start expression
         (?:\s+end="(?P<end>[^"]+)")? # optional end expression
+        (?:\s+before="(?P<before>[^"]+)")? # optional preamble
+        (?:\s+after="(?P<after>[^"]+)")? # optional postamble
         (?:\s+rewrite_relative_urls=(?P<rewrite_relative_urls>\w*))? # option
         \s*
         %} # closing tag
@@ -64,6 +66,8 @@ def _on_page_markdown(markdown, page, **kwargs):
         filename = match.group('filename')
         start = interpret_escapes(match.group('start'))
         end = interpret_escapes(match.group('end'))
+        before = interpret_escapes(match.group('before')) or ''
+        after = interpret_escapes(match.group('after')) or ''
 
         option_value = match.group('rewrite_relative_urls')
         if option_value in [None, 'true']:
@@ -101,7 +105,7 @@ def _on_page_markdown(markdown, page, **kwargs):
             '<!-- BEGIN INCLUDE %s %s %s -->\n' % (
                 filename, html.escape(start or ''), html.escape(end or '')
             )
-            + text_to_include
+            + before + text_to_include + after
             + '\n<!-- END INCLUDE -->'
         )
 
