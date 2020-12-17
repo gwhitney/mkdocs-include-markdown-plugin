@@ -89,6 +89,31 @@ This must be included.
 
 <!-- END INCLUDE -->
 ''',
+        ),
+
+        # Start and end arguments with escape sequence
+        (
+            '''# Header
+
+{%
+  include-markdown "{filepath}"
+  start="<!--\\tstart -->"
+  end="<!--\\tend -->"
+%}
+''',
+            '''This must be ignored.
+<!--\tstart -->
+This must be included.
+<!--\tend -->
+This must be ignored also.''',
+            '''# Header
+
+<!-- BEGIN INCLUDE {filepath} &lt;!--\tstart --&gt; &lt;!--\tend --&gt; -->
+
+This must be included.
+
+<!-- END INCLUDE -->
+''',
         )
     ),
 )
